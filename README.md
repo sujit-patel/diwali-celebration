@@ -4,7 +4,7 @@ A stunning, premium-quality, fully responsive, single-page Diwali celebration we
 
 Experience the divine festival of lights through realistic animated diyas, customizable greetings, sky-illuminating fireworks, and seamless sharing across WhatsApp, Facebook, and mobile devices.
 
-![Happy Diwali](diwali-wishes/assets/favicon.svg)
+![Happy Diwali](assets/favicon.svg)
 
 ---
 
@@ -44,31 +44,32 @@ Experience the divine festival of lights through realistic animated diyas, custo
 ## 📁 Project Structure
 
 ```
-diwali-wishes/
 ├── index.html         # Main markup, SEO & Open Graph meta tags
 ├── style.css          # Midnight & Gold palette, glassmorphism, responsive styles
 ├── script.js          # Fireworks physics, interactive diya, generator, Web Audio API
-└── assets/
-    ├── favicon.svg          # Vector diya favicon
-    └── rangoli-mandala.svg  # Sacred geometric mandala pattern
+├── assets/
+│   ├── favicon.svg          # Vector diya favicon
+│   └── rangoli-mandala.svg  # Sacred geometric mandala pattern
+├── README.md
+└── .gitignore
 ```
 
 ---
 
 ## 🚀 Getting Started
 
-Simply open `diwali-wishes/index.html` or the root `index.html` in any web browser:
+Simply open `index.html` in any web browser:
 
 ```bash
 # Direct launch in your default browser
 # Windows:
-start diwali-wishes/index.html
+start index.html
 
 # macOS:
-open diwali-wishes/index.html
+open index.html
 
 # Linux:
-xdg-open diwali-wishes/index.html
+xdg-open index.html
 ```
 
 Or serve via any static HTTP server:

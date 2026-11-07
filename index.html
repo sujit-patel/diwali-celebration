@@ -2,15 +2,652 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta http-equiv="refresh" content="0; url=diwali-wishes/index.html">
-  <title>Happy Diwali 2026 | शुभ दीपावली</title>
-  <script>
-    window.location.replace("diwali-wishes/index.html" + window.location.search + window.location.hash);
-  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Diwali 2026 | शुभ दीपावली - Festival of Lights Celebration</title>
+  <meta name="description" content="Celebrate Happy Diwali 2026 with interactive glowing diyas, magical fireworks, personalized festive greetings, and share heartfelt blessings with your family and friends.">
+  <meta name="keywords" content="Happy Diwali 2026, Shubh Deepavali, Diwali wishes, Diwali greetings, interactive diya, Diwali fireworks, Indian festival of lights">
+  <meta name="author" content="Diwali Celebration">
+  <meta name="theme-color" content="#070814">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://diwali-celebration.local/">
+  <meta property="og:title" content="Happy Diwali 2026 | शुभ दीपावली - Festival of Lights">
+  <meta property="og:description" content="Send personalized Diwali greetings, light the sacred diya, burst fireworks, and spread happiness this festive season!">
+  <meta property="og:image" content="assets/favicon.svg">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Happy Diwali 2026 | शुभ दीपावली - Festival of Lights">
+  <meta name="twitter:description" content="Light sacred diyas, launch vibrant fireworks, and generate personalized Diwali wishes for your loved ones!">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Poppins:wght@300;400;500;600;700&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
 </head>
-<body style="background:#070814; color:#ffd700; font-family:sans-serif; text-align:center; padding-top:20vh;">
-  <h2>🪔 शुभ दीपावली | Happy Diwali 2026</h2>
-  <p>Entering the Festival of Lights...</p>
-  <p><a href="diwali-wishes/index.html" style="color:#ffb703;">Click here if not redirected automatically</a></p>
+<body>
+
+  <!-- Background Particle & Fireworks Canvas -->
+  <canvas id="fireworks-canvas" aria-hidden="true"></canvas>
+
+  <!-- Ambient Light Halos -->
+  <div class="ambient-glow ambient-glow--top" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow--center" aria-hidden="true"></div>
+  <div class="ambient-glow ambient-glow--bottom" aria-hidden="true"></div>
+
+  <!-- Decorative Top Toran / Festive Garlands -->
+  <div class="festive-toran" aria-hidden="true">
+    <div class="toran-garland">
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+      <div class="toran-drop"></div>
+    </div>
+  </div>
+
+  <!-- Hanging Decorative Lanterns / Diyas (Left & Right) -->
+  <div class="hanging-lantern hanging-lantern--left" aria-hidden="true">
+    <div class="lantern-string"></div>
+    <div class="lantern-body">
+      <div class="lantern-flame"></div>
+    </div>
+  </div>
+  <div class="hanging-lantern hanging-lantern--right" aria-hidden="true">
+    <div class="lantern-string"></div>
+    <div class="lantern-body">
+      <div class="lantern-flame"></div>
+    </div>
+  </div>
+
+  <!-- Floating Audio & Celebration Controls -->
+  <aside class="floating-controls" aria-label="Celebration Controls">
+    <button id="sound-toggle-btn" class="control-btn" title="Toggle Festive Sound Effects" aria-label="Toggle Festive Sound Effects" aria-pressed="false">
+      <span class="control-icon" id="sound-icon">🔇</span>
+      <span class="control-label">Sound: <strong id="sound-status">Off</strong></span>
+    </button>
+    <button id="firework-launch-btn" class="control-btn control-btn--sparkle" title="Burst Celebration Fireworks" aria-label="Burst Fireworks">
+      <span class="control-icon">🎆</span>
+      <span class="control-label">Launch Fireworks</span>
+    </button>
+  </aside>
+
+  <!-- Header / Navigation Bar -->
+  <header class="site-header" id="top">
+    <nav class="nav-container" aria-label="Main Navigation">
+      <a href="#top" class="brand-logo" aria-label="Deepavali 2026 Home">
+        <span class="brand-diya" aria-hidden="true">🪔</span>
+        <span class="brand-text">
+          <span class="brand-title">दीपावली</span>
+          <span class="brand-subtitle">Deepavali 2026</span>
+        </span>
+      </a>
+
+      <ul class="nav-menu">
+        <li><a href="#hero" class="nav-link">Home</a></li>
+        <li><a href="#interactive-diya" class="nav-link">Sacred Diya</a></li>
+        <li><a href="#wishes-generator" class="nav-link">Personalize Wish</a></li>
+        <li><a href="#festive-cards" class="nav-link">Diwali Blessings</a></li>
+      </ul>
+
+      <a href="#wishes-generator" class="btn-nav-action">
+        <span>✨ Send Wish</span>
+      </a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 2. HERO SECTION -->
+    <section class="hero-section" id="hero" aria-labelledby="hero-title">
+      <!-- Rotating Decorative Rangoli in background -->
+      <div class="hero-rangoli-bg" aria-hidden="true">
+        <img src="assets/rangoli-mandala.svg" alt="" class="spinning-rangoli">
+      </div>
+
+      <!-- Personalized Incoming Greeting Banner (if URL has ?to=...) -->
+      <div id="incoming-wish-banner" class="incoming-wish-banner hidden" role="alert">
+        <div class="banner-inner">
+          <span class="banner-sparkle">✨</span>
+          <p id="incoming-wish-text">A special Diwali wish has arrived for you!</p>
+          <a href="#generated-card-section" class="banner-cta">View Greeting 🪔</a>
+        </div>
+      </div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-sparkle">✨</span>
+          <span>Auspicious Deepotsav Festival</span>
+          <span class="badge-sparkle">✨</span>
+        </div>
+
+        <h1 class="hero-title" id="hero-title">
+          <span class="hindi-headline">शुभ दीपावली</span>
+          <span class="english-headline">Happy Diwali 2026</span>
+        </h1>
+
+        <p class="hero-subheading">
+          May the Festival of Lights Fill Your Life With Happiness, Love, Peace &amp; Prosperity.
+        </p>
+
+        <!-- Central Hero Animated Diya -->
+        <div class="hero-diya-wrapper" aria-label="Festive Diya Illustration">
+          <div class="diya-aura"></div>
+          <div class="diya-sparkles-container" aria-hidden="true">
+            <span class="sparkle s1">✦</span>
+            <span class="sparkle s2">★</span>
+            <span class="sparkle s3">✦</span>
+            <span class="sparkle s4">★</span>
+          </div>
+
+          <div class="traditional-diya hero-diya-graphic">
+            <!-- Diya Flame -->
+            <div class="diya-flame-group">
+              <div class="flame-outer"></div>
+              <div class="flame-core"></div>
+              <div class="flame-glow"></div>
+            </div>
+            <!-- Diya Clay Vessel -->
+            <div class="diya-body">
+              <div class="diya-rim-gold"></div>
+              <div class="diya-pattern"></div>
+              <div class="diya-base-shadow"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Call to Action Buttons -->
+        <div class="hero-actions">
+          <a href="#wishes-generator" class="cta-button primary-cta" id="cta-celebrate-btn">
+            <span class="cta-shine"></span>
+            <span class="cta-text">✨ Celebrate Diwali</span>
+          </a>
+          <a href="#interactive-diya" class="cta-button secondary-cta" id="cta-light-diya-btn">
+            <span class="cta-text">🪔 Light the Diya</span>
+          </a>
+        </div>
+
+        <!-- Floating scroll indicator -->
+        <a href="#interactive-diya" class="scroll-down-hint" aria-label="Scroll to Sacred Diya experience">
+          <span class="hint-text">Experience the Light</span>
+          <span class="hint-arrow">↓</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- 3. INTERACTIVE DIYA EXPERIENCE -->
+    <section class="interactive-diya-section" id="interactive-diya" aria-labelledby="diya-experience-title">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">Divine Illumination</span>
+          <h2 class="section-title" id="diya-experience-title">The Sacred Diya Experience</h2>
+          <div class="decorative-separator" aria-hidden="true">
+            <span class="sep-line"></span>
+            <span class="sep-icon">🪔</span>
+            <span class="sep-line"></span>
+          </div>
+          <p class="section-subtitle">
+            Click on the sacred diya to kindle its radiant flame, unleash golden sparks, and invite auspicious blessings into your home.
+          </p>
+        </div>
+
+        <!-- Interactive Centerpiece Diya -->
+        <div class="interactive-diya-stage">
+          <div class="diya-pedestal-glow" id="pedestal-glow"></div>
+          
+          <button type="button" class="grand-diya-button" id="grand-diya-btn" aria-label="Click to light sacred diya and trigger radiant glow">
+            <!-- Golden shockwave ripple effect on click -->
+            <div class="diya-shockwave" id="diya-shockwave" aria-hidden="true"></div>
+
+            <!-- Diya Graphic Container -->
+            <div class="grand-diya" id="grand-diya">
+              <!-- Animated Flame Group -->
+              <div class="grand-flame-wrapper" id="grand-flame">
+                <div class="flame-halo"></div>
+                <div class="flame-outer-burst"></div>
+                <div class="flame-shape flame-outer"></div>
+                <div class="flame-shape flame-middle"></div>
+                <div class="flame-shape flame-inner"></div>
+                <div class="flame-wick"></div>
+              </div>
+
+              <!-- Grand Clay Diya Vessel -->
+              <div class="grand-diya-vessel">
+                <div class="vessel-gold-rim"></div>
+                <div class="vessel-oil-pool">
+                  <div class="oil-reflection"></div>
+                </div>
+                <div class="vessel-clay-body">
+                  <div class="vessel-mandala-motif"></div>
+                </div>
+                <div class="vessel-base-shadow"></div>
+              </div>
+            </div>
+          </button>
+
+          <!-- Floating Golden Particle Anchor for Clicks -->
+          <div class="diya-particle-spawner" id="diya-particle-spawner" aria-hidden="true"></div>
+
+          <!-- Click Prompt / Status Message -->
+          <div class="diya-message-box" id="diya-message-box" role="status" aria-live="polite">
+            <span class="message-icon">✨</span>
+            <span class="message-text" id="diya-dynamic-message">Spread Light, Spread Happiness!</span>
+            <span class="message-icon">✨</span>
+          </div>
+
+          <!-- Diya Interaction Stats -->
+          <div class="diya-stats-bar">
+            <div class="stat-item">
+              <span class="stat-number" id="diya-click-count">0</span>
+              <span class="stat-label">Sparks Kindled</span>
+            </div>
+            <div class="stat-divider"></div>
+            <div class="stat-item">
+              <span class="stat-status" id="diya-glow-level">Radiant &amp; Blessed</span>
+              <span class="stat-label">Diya Radiance</span>
+            </div>
+          </div>
+
+          <!-- Deepotsav Cascade Button -->
+          <div class="deepotsav-action">
+            <button type="button" class="btn-deepotsav" id="btn-ignite-all">
+              <span>🌟 Ignite Grand Deepotsav (Light All Lamps)</span>
+            </button>
+          </div>
+
+          <!-- Decorative Arch of Mini Diyas -->
+          <div class="mini-diyas-row" id="mini-diyas-row" aria-label="Decorative festive lamps">
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+            <div class="mini-diya lit"><span class="mini-flame"></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. PERSONALIZED DIWALI WISHES GENERATOR -->
+    <section class="wishes-generator-section" id="wishes-generator" aria-labelledby="generator-title">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">Express Your Heart</span>
+          <h2 class="section-title" id="generator-title">Send a Special Diwali Wish ❤️</h2>
+          <div class="decorative-separator" aria-hidden="true">
+            <span class="sep-line"></span>
+            <span class="sep-icon">✨</span>
+            <span class="sep-line"></span>
+          </div>
+          <p class="section-subtitle">
+            Craft a personalized festive greeting card tailored for your dearest ones. Fill in the details below and generate a heartfelt wish in seconds.
+          </p>
+        </div>
+
+        <div class="generator-layout">
+          <!-- Left: Input Form Card -->
+          <div class="generator-form-card glass-panel">
+            <div class="card-glow-edge" aria-hidden="true"></div>
+            
+            <form id="diwali-wishes-form" class="wishes-form" novalidate>
+              <div class="form-group">
+                <label for="sender-name-input" class="form-label">
+                  <span class="label-icon">✍️</span> Your Name
+                  <span class="required-indicator">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <input 
+                    type="text" 
+                    id="sender-name-input" 
+                    class="form-control" 
+                    placeholder="e.g. Aarav, Priya, or The Sharma Family" 
+                    maxlength="60" 
+                    required 
+                    autocomplete="name"
+                  >
+                  <span class="input-focus-border"></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="recipient-name-input" class="form-label">
+                  <span class="label-icon">🎁</span> Recipient's Name
+                  <span class="optional-indicator">(Optional)</span>
+                </label>
+                <div class="input-wrapper">
+                  <input 
+                    type="text" 
+                    id="recipient-name-input" 
+                    class="form-control" 
+                    placeholder="e.g. Rahul, Sneha, Family & Friends" 
+                    maxlength="60" 
+                    autocomplete="off"
+                  >
+                  <span class="input-focus-border"></span>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="greeting-style-select" class="form-label">
+                  <span class="label-icon">🪔</span> Greeting Style
+                </label>
+                <div class="select-wrapper">
+                  <select id="greeting-style-select" class="form-control form-select">
+                    <option value="traditional" selected>1. Traditional Blessings (Spiritual &amp; Prosperity)</option>
+                    <option value="family">2. Family &amp; Love (Warmth &amp; Togetherness)</option>
+                    <option value="friends">3. Friends Special (Fun, Sweets &amp; Sparklers)</option>
+                    <option value="success">4. Success &amp; Prosperity (Career, Growth &amp; Fortune)</option>
+                  </select>
+                  <span class="select-chevron" aria-hidden="true">▼</span>
+                </div>
+              </div>
+
+              <!-- Optional Custom Message Expansion -->
+              <div class="form-group">
+                <div class="custom-msg-header">
+                  <label for="custom-note-input" class="form-label">
+                    <span class="label-icon">💌</span> Personal Note / Custom Wish
+                    <span class="optional-indicator">(Optional)</span>
+                  </label>
+                  <button type="button" id="reset-default-wish-btn" class="btn-text-action" title="Revert to style default message">
+                    Reset to Default
+                  </button>
+                </div>
+                <div class="textarea-wrapper">
+                  <textarea 
+                    id="custom-note-input" 
+                    class="form-control form-textarea" 
+                    rows="4" 
+                    placeholder="You can edit or add your personalized heartfelt words here..."
+                    maxlength="350"
+                  ></textarea>
+                  <span class="char-counter" id="char-counter">0 / 350</span>
+                </div>
+              </div>
+
+              <button type="submit" class="btn-generate-wish" id="generate-wish-btn">
+                <span class="btn-sparkle-fx"></span>
+                <span class="btn-content">
+                  <span class="btn-icon">✨</span>
+                  <span class="btn-text">Generate My Wishes</span>
+                </span>
+              </button>
+            </form>
+          </div>
+
+          <!-- Right: Generated Greeting Card Preview & Share Hub -->
+          <div class="generator-preview-card" id="generated-card-section">
+            <div class="preview-header">
+              <span class="preview-tag">Live Greeting Preview</span>
+              <span class="card-status-badge" id="card-status-badge">Ready to Share</span>
+            </div>
+
+            <!-- The Festive Greeting Card -->
+            <article class="festive-greeting-card" id="greeting-card" aria-label="Personalized Diwali Greeting Card">
+              <!-- Golden Filigree Corners -->
+              <div class="card-corner corner-tl" aria-hidden="true"></div>
+              <div class="card-corner corner-tr" aria-hidden="true"></div>
+              <div class="card-corner corner-bl" aria-hidden="true"></div>
+              <div class="card-corner corner-br" aria-hidden="true"></div>
+              
+              <!-- Subtle Background Rangoli Watermark -->
+              <div class="card-watermark" aria-hidden="true"></div>
+
+              <div class="card-inner-frame">
+                <!-- Card Header with Mini Diya -->
+                <header class="card-header">
+                  <div class="card-diya-badge" aria-hidden="true">
+                    <span class="badge-diya-flame"></span>
+                    <span class="badge-diya-pot"></span>
+                  </div>
+                  <div class="card-festival-title">
+                    <span class="hindi-badge">शुभ दीपावली</span>
+                    <span class="english-badge">Happy Deepavali 2026</span>
+                  </div>
+                </header>
+
+                <!-- Card Content -->
+                <div class="card-body">
+                  <p class="greeting-salutation" id="card-salutation">Dear Family &amp; Friends,</p>
+                  
+                  <div class="greeting-message-text" id="card-message-text">
+                    Wishing you and your family a very Happy Diwali!
+                    <br><br>
+                    May Goddess Lakshmi bless your home with happiness, prosperity, good health, and endless success. May every diya lit this season bring boundless cheer to your life!
+                  </div>
+
+                  <div class="greeting-signature">
+                    <p class="sign-label">With love &amp; festive regards,</p>
+                    <p class="sign-name" id="card-sender-name">Your Well Wisher</p>
+                  </div>
+                </div>
+
+                <!-- Card Footer Seal -->
+                <footer class="card-footer">
+                  <div class="seal-motif">🪷 ✦ तमसो मा ज्योतिर्गमय ✦ 🪷</div>
+                </footer>
+              </div>
+            </article>
+
+            <!-- 5. SHARE FEATURES – MOST IMPORTANT -->
+            <div class="share-features-hub" aria-label="Share Your Diwali Greeting">
+              <h3 class="share-hub-title">
+                <span>Spread the Festive Joy</span>
+                <span class="title-sub">Share this greeting with family, friends &amp; groups</span>
+              </h3>
+
+              <div class="share-buttons-grid">
+                <!-- Share on WhatsApp -->
+                <button type="button" class="share-btn share-whatsapp" id="btn-share-whatsapp" title="Share greeting directly on WhatsApp">
+                  <span class="share-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                      <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.05 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.15 12.04 20.15C10.56 20.15 9.11 19.76 7.85 19L7.55 18.83L4.43 19.65L5.26 16.61L5.06 16.29C4.24 15 3.8 13.47 3.8 11.91C3.81 7.37 7.5 3.67 12.05 3.67M9.53 7.55C9.33 7.55 9 7.63 8.72 7.94C8.44 8.25 7.66 8.98 7.66 10.46C7.66 11.94 8.74 13.37 8.89 13.57C9.05 13.78 10.96 16.73 13.88 17.98C14.58 18.28 15.12 18.46 15.55 18.6C16.25 18.82 16.89 18.79 17.39 18.71C17.95 18.63 19.12 18 19.36 17.33C19.6 16.65 19.6 16.08 19.53 15.95C19.45 15.83 19.26 15.76 18.96 15.61C18.67 15.46 17.21 14.74 16.94 14.64C16.67 14.55 16.47 14.5 16.28 14.8C16.08 15.1 15.51 15.76 15.34 15.96C15.17 16.15 15 16.18 14.71 16.03C14.41 15.88 13.46 15.57 12.34 14.57C11.47 13.79 10.88 12.83 10.71 12.54C10.54 12.24 10.69 12.08 10.84 11.93C10.98 11.8 11.14 11.58 11.3 11.4C11.45 11.22 11.5 11.09 11.6 10.89C11.7 10.69 11.65 10.51 11.58 10.37C11.5 10.22 10.93 8.82 10.68 8.24C10.45 7.67 10.22 7.75 10.05 7.74L9.53 7.55Z"/>
+                    </svg>
+                  </span>
+                  <span class="share-btn-text">Share on WhatsApp</span>
+                </button>
+
+                <!-- Share on Facebook -->
+                <button type="button" class="share-btn share-facebook" id="btn-share-facebook" title="Share website on Facebook">
+                  <span class="share-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+                      <path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z"/>
+                    </svg>
+                  </span>
+                  <span class="share-btn-text">Share on Facebook</span>
+                </button>
+
+                <!-- Copy Greeting -->
+                <button type="button" class="share-btn share-copy" id="btn-copy-greeting" title="Copy greeting text to clipboard">
+                  <span class="share-icon" aria-hidden="true">📋</span>
+                  <span class="share-btn-text">Copy Greeting</span>
+                </button>
+
+                <!-- Native Share Button (Web Share API) -->
+                <button type="button" class="share-btn share-native" id="btn-native-share" title="Share via device options">
+                  <span class="share-icon" aria-hidden="true">📲</span>
+                  <span class="share-btn-text">Share Everywhere</span>
+                </button>
+              </div>
+
+              <!-- Shareable Link info bar -->
+              <div class="share-url-box">
+                <span class="share-url-label">🔗 Personalized Link:</span>
+                <input type="text" id="shareable-link-input" class="share-url-input" readonly value="">
+                <button type="button" class="btn-copy-url" id="btn-copy-url" title="Copy link">Copy Link</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. DIWALI WISHES SECTION (Four Cards) -->
+    <section class="festive-cards-section" id="festive-cards" aria-labelledby="cards-section-title">
+      <div class="section-container">
+        <div class="section-header">
+          <span class="section-tag">Festive Inspirations</span>
+          <h2 class="section-title" id="cards-section-title">Sacred Diwali Blessings</h2>
+          <div class="decorative-separator" aria-hidden="true">
+            <span class="sep-line"></span>
+            <span class="sep-icon">🪷</span>
+            <span class="sep-line"></span>
+          </div>
+          <p class="section-subtitle">
+            Explore timeless messages of joy, success, love, and health. Click "Send this Wish" on any card to instantly personalize and share it.
+          </p>
+        </div>
+
+        <div class="blessings-grid">
+          <!-- Card 1: 🪔 Happiness & Joy -->
+          <article class="blessing-card" data-style="traditional" tabindex="0">
+            <div class="card-glow-layer" aria-hidden="true"></div>
+            <div class="card-icon-wrapper">
+              <span class="blessing-icon" aria-hidden="true">🪔</span>
+            </div>
+            <h3 class="blessing-card-title">Happiness &amp; Joy</h3>
+            <p class="blessing-quote">
+              "May the luminous glow of golden diyas dispel every shadow from your life, filling your heart with boundless laughter, pure delight, and blissful moments."
+            </p>
+            <div class="blessing-motif" aria-hidden="true">✦ आनन्द एवं उल्लास ✦</div>
+            <button type="button" class="btn-select-wish" data-target-style="traditional" data-card-title="Happiness &amp; Joy">
+              <span>✨ Send this Wish</span>
+            </button>
+          </article>
+
+          <!-- Card 2: ✨ Success & Prosperity -->
+          <article class="blessing-card" data-style="success" tabindex="0">
+            <div class="card-glow-layer" aria-hidden="true"></div>
+            <div class="card-icon-wrapper">
+              <span class="blessing-icon" aria-hidden="true">✨</span>
+            </div>
+            <h3 class="blessing-card-title">Success &amp; Prosperity</h3>
+            <p class="blessing-quote">
+              "May Lord Ganesha remove every obstacle from your endeavors and Goddess Lakshmi shower your life with limitless wealth, triumphant breakthroughs, and abundance."
+            </p>
+            <div class="blessing-motif" aria-hidden="true">✦ समृद्धि एवं विजय ✦</div>
+            <button type="button" class="btn-select-wish" data-target-style="success" data-card-title="Success &amp; Prosperity">
+              <span>✨ Send this Wish</span>
+            </button>
+          </article>
+
+          <!-- Card 3: ❤️ Love & Togetherness -->
+          <article class="blessing-card" data-style="family" tabindex="0">
+            <div class="card-glow-layer" aria-hidden="true"></div>
+            <div class="card-icon-wrapper">
+              <span class="blessing-icon" aria-hidden="true">❤️</span>
+            </div>
+            <h3 class="blessing-card-title">Love &amp; Togetherness</h3>
+            <p class="blessing-quote">
+              "May this auspicious festival draw you closer to those you cherish most, bridging distances and filling every family celebration with unconditional warmth and sweet memories."
+            </p>
+            <div class="blessing-motif" aria-hidden="true">✦ प्रेम एवं सौहार्द ✦</div>
+            <button type="button" class="btn-select-wish" data-target-style="family" data-card-title="Love &amp; Togetherness">
+              <span>✨ Send this Wish</span>
+            </button>
+          </article>
+
+          <!-- Card 4: 🌸 Peace & Good Health -->
+          <article class="blessing-card" data-style="friends" tabindex="0">
+            <div class="card-glow-layer" aria-hidden="true"></div>
+            <div class="card-icon-wrapper">
+              <span class="blessing-icon" aria-hidden="true">🌸</span>
+            </div>
+            <h3 class="blessing-card-title">Peace &amp; Good Health</h3>
+            <p class="blessing-quote">
+              "May divine serenity bless your thoughts, renewed energy rejuvenate your spirit, and lifelong vibrant wellness surround you and your loved ones today and always."
+            </p>
+            <div class="blessing-motif" aria-hidden="true">✦ शान्ति एवं आरोग्य ✦</div>
+            <button type="button" class="btn-select-wish" data-target-style="friends" data-card-title="Peace &amp; Good Health">
+              <span>✨ Send this Wish</span>
+            </button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. FESTIVE HIGHLIGHT / CELEBRATION SHOWCASE -->
+    <section class="celebration-cta-section" aria-label="Interactive Celebration Banner">
+      <div class="section-container">
+        <div class="celebration-banner glass-panel">
+          <div class="banner-rangoli-left" aria-hidden="true"></div>
+          <div class="banner-content">
+            <span class="celebration-tag">Festival of Unity &amp; Light</span>
+            <h2 class="celebration-title">"Light a Diya in Your Heart Today"</h2>
+            <p class="celebration-desc">
+              Every lamp we kindle represents the triumph of good over evil, knowledge over ignorance, and hope over despair. Celebrate this Deepavali by lighting smiles wherever you go!
+            </p>
+            <div class="celebration-cta-actions">
+              <button type="button" class="cta-button primary-cta" id="banner-firework-btn">
+                <span>🎆 Launch Grand Celebration Fireworks</span>
+              </button>
+              <a href="#wishes-generator" class="cta-button secondary-cta">
+                <span>💌 Create Another Greeting</span>
+              </a>
+            </div>
+          </div>
+          <div class="banner-rangoli-right" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 8. FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-rangoli-divider" aria-hidden="true">
+      <div class="divider-line"></div>
+      <div class="divider-center">
+        <span class="divider-diya">🪔</span>
+      </div>
+      <div class="divider-line"></div>
+    </div>
+
+    <div class="footer-container">
+      <div class="footer-main">
+        <h3 class="footer-heading">"May Your Life Always Shine Bright!"</h3>
+        <p class="footer-subheading">Happy Diwali 2026 🪔</p>
+        <p class="footer-sanskrit-quote">
+          ॐ असतो मा सद्गमय । तमसो मा ज्योतिर्गमय । मृत्योर्मा अमृतं गमय ॥
+        </p>
+      </div>
+
+      <!-- Footer Quick Action Buttons -->
+      <div class="footer-actions">
+        <button type="button" class="footer-btn" id="footer-share-site-btn">
+          <span class="btn-icon">✨</span>
+          <span>Share Website</span>
+        </button>
+
+        <a href="#top" class="footer-btn footer-back-to-top" id="back-to-top-btn" aria-label="Back to top of page">
+          <span class="btn-icon">⬆️</span>
+          <span>Back to Top</span>
+        </a>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="copyright-text">
+          &copy; 2026 Deepavali Celebration. Crafted with love, light, and festive cheer. No backend or trackers.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container for Clipboard & Sharing -->
+  <div id="toast-container" class="toast-container" aria-live="assertive" role="status"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
