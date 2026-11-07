@@ -104,6 +104,7 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
 
   /* ==========================================================================
      2. WEB AUDIO API SYNTHESIZER (100% Offline & Zero External Files)
+     Authentic Indian Diwali Patakha Sound Suite
      ========================================================================== */
   function initAudioContext() {
     if (!state.audioCtx) {
@@ -117,7 +118,25 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
     }
   }
 
-  // Play resonant brass temple bell / chime when diya is lit
+  function ensureSoundEnabled() {
+    if (!state.soundEnabled) {
+      state.soundEnabled = true;
+      initAudioContext();
+      const soundBtn = document.getElementById('sound-toggle-btn');
+      const soundIcon = document.getElementById('sound-icon');
+      const soundStatus = document.getElementById('sound-status');
+      const indicatorState = document.getElementById('sound-indicator-state');
+
+      if (soundBtn) soundBtn.setAttribute('aria-pressed', 'true');
+      if (soundIcon) soundIcon.textContent = "🔔";
+      if (soundStatus) soundStatus.textContent = "On";
+      if (indicatorState) indicatorState.textContent = "Active 🔊";
+
+      showToast("🔊 Patakha Sound Enabled! Volume up for Diwali Dhamaka!", "💥");
+    }
+  }
+
+  // 1. Resonant Brass Temple Bell Chime (when Diya is lit)
   function playDiyaBellSound() {
     if (!state.soundEnabled) return;
     initAudioContext();
@@ -126,8 +145,6 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
     try {
       const ctx = state.audioCtx;
       const now = ctx.currentTime;
-
-      // Harmonic frequencies for rich brass temple bell chime
       const baseFreq = 587.33; // D5
       const harmonics = [1, 2.02, 2.76, 4.07, 5.43];
       const gains = [0.25, 0.15, 0.1, 0.06, 0.03];
@@ -149,12 +166,121 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
         osc.stop(now + 2.5);
       });
     } catch (e) {
-      console.warn("Audio playback not permitted yet", e);
+      console.warn("Audio error", e);
     }
   }
 
-  // Play gentle celebratory sparkle / firework pop
-  function playFireworkSound() {
+  // 2. Rocket Screaming Whistle (रॉकेट की सीटी)
+  function playRocketWhistle() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const duration = 0.55;
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      const filter = ctx.createBiquadFilter();
+
+      // Screaming ascending whistle frequency
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(620, now);
+      osc.frequency.exponentialRampToValueAtTime(2600, now + duration * 0.85);
+
+      // Bandpass resonant peak for iconic whistling motor effect
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(1100, now);
+      filter.frequency.exponentialRampToValueAtTime(2800, now + duration * 0.85);
+      filter.Q.setValueAtTime(4.5, now);
+
+      gain.gain.setValueAtTime(0.02, now);
+      gain.gain.linearRampToValueAtTime(0.24, now + duration * 0.65);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      osc.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + duration + 0.05);
+    } catch (e) {
+      console.warn("Rocket whistle error", e);
+    }
+  }
+
+  // 3. Authentic Pataka Explosion / Blast (धमाका)
+  function playPatakaExplosion(options = {}) {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const isHeavy = options.heavy || false;
+
+      // Part A: Sub-bass Punch (chest-hitting boom)
+      const subOsc = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      subOsc.type = 'sine';
+      const startFreq = isHeavy ? 160 : 130;
+      const endFreq = isHeavy ? 24 : 35;
+      const duration = isHeavy ? 0.65 : 0.4;
+
+      subOsc.frequency.setValueAtTime(startFreq, now);
+      subOsc.frequency.exponentialRampToValueAtTime(endFreq, now + duration);
+
+      subGain.gain.setValueAtTime(isHeavy ? 0.75 : 0.5, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+      subOsc.connect(subGain);
+      subGain.connect(ctx.destination);
+      subOsc.start(now);
+      subOsc.stop(now + duration + 0.05);
+
+      // Part B: Fiery noise explosion body (shockwave blast)
+      const bufferSize = Math.floor(ctx.sampleRate * (isHeavy ? 0.55 : 0.35));
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * (isHeavy ? 0.09 : 0.06)));
+      }
+
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const bandpass = ctx.createBiquadFilter();
+      bandpass.type = 'bandpass';
+      bandpass.frequency.setValueAtTime(isHeavy ? 520 : 750, now);
+      bandpass.Q.setValueAtTime(1.8, now);
+
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(isHeavy ? 0.8 : 0.55, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + (isHeavy ? 0.5 : 0.32));
+
+      noise.connect(bandpass);
+      bandpass.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      noise.start(now);
+
+      // Part C: Trailing Crackles (चट-चट)
+      const crackleCount = isHeavy ? 5 : 3;
+      for (let c = 0; c < crackleCount; c++) {
+        const delay = 0.06 + Math.random() * 0.22;
+        setTimeout(() => {
+          if (state.soundEnabled) playSingleCrackle();
+        }, delay * 1000);
+      }
+    } catch (e) {
+      console.warn("Explosion audio error", e);
+    }
+  }
+
+  // 4. Sutli / Rassi Bomb Blast (भारी सुतली बम धमाका)
+  function playSutliBombSound() {
     if (!state.soundEnabled) return;
     initAudioContext();
     if (!state.audioCtx) return;
@@ -163,48 +289,189 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
       const ctx = state.audioCtx;
       const now = ctx.currentTime;
 
-      // Soft burst whoosh & pop
-      const bufferSize = ctx.sampleRate * 0.25;
+      // Fuse ignition hiss (tssss...)
+      const fuseSize = Math.floor(ctx.sampleRate * 0.18);
+      const fuseBuffer = ctx.createBuffer(1, fuseSize, ctx.sampleRate);
+      const fuseData = fuseBuffer.getChannelData(0);
+      for (let i = 0; i < fuseSize; i++) {
+        fuseData[i] = (Math.random() * 2 - 1) * 0.4;
+      }
+      const fuseSource = ctx.createBufferSource();
+      fuseSource.buffer = fuseBuffer;
+
+      const fuseFilter = ctx.createBiquadFilter();
+      fuseFilter.type = 'highpass';
+      fuseFilter.frequency.setValueAtTime(3500, now);
+
+      const fuseGain = ctx.createGain();
+      fuseGain.gain.setValueAtTime(0.18, now);
+      fuseGain.gain.exponentialRampToValueAtTime(0.01, now + 0.16);
+
+      fuseSource.connect(fuseFilter);
+      fuseFilter.connect(fuseGain);
+      fuseGain.connect(ctx.destination);
+      fuseSource.start(now);
+
+      // Explosive massive boom slightly after fuse
+      setTimeout(() => {
+        playPatakaExplosion({ heavy: true });
+      }, 140);
+    } catch (e) {
+      console.warn("Sutli bomb error", e);
+    }
+  }
+
+  // 5. 100-Wala Mirchi Ladi Sequence (तड़ातड़ लड़ी)
+  function playLadiSound() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+
+    const burstCount = 14;
+    for (let i = 0; i < burstCount; i++) {
+      const delay = i * 75 + (Math.random() * 25 - 12);
+      setTimeout(() => {
+        if (!state.soundEnabled) return;
+        const isFinal = (i === burstCount - 1);
+        if (isFinal) {
+          playPatakaExplosion({ heavy: true });
+        } else {
+          playSnapPop();
+        }
+      }, delay);
+    }
+  }
+
+  // Single fast cracker snap for Ladi (पटाखे की तड़ातड़)
+  function playSnapPop() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+
+      // Sharp transient click
+      const bufferSize = Math.floor(ctx.sampleRate * 0.08);
       const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
       const data = buffer.getChannelData(0);
       for (let i = 0; i < bufferSize; i++) {
-        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.05));
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.012));
       }
 
       const noise = ctx.createBufferSource();
       noise.buffer = buffer;
 
       const filter = ctx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(800, now);
-      filter.frequency.exponentialRampToValueAtTime(150, now + 0.25);
+      filter.type = 'bandpass';
+      const randomPitch = 1200 + Math.random() * 1400;
+      filter.frequency.setValueAtTime(randomPitch, now);
+      filter.Q.setValueAtTime(3.0, now);
 
       const gain = ctx.createGain();
-      gain.gain.setValueAtTime(0.18, now);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+      gain.gain.setValueAtTime(0.45 + Math.random() * 0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
 
       noise.connect(filter);
       filter.connect(gain);
       gain.connect(ctx.destination);
-
       noise.start(now);
 
-      // Add high sparkle chime
+      // Low pop body
       const osc = ctx.createOscillator();
       const oscGain = ctx.createGain();
       osc.type = 'sine';
-      osc.frequency.setValueAtTime(1046.5, now); // C6
-      osc.frequency.exponentialRampToValueAtTime(2093, now + 0.15); // C7
-      oscGain.gain.setValueAtTime(0.08, now);
-      oscGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.35);
+      osc.frequency.setValueAtTime(220 + Math.random() * 100, now);
+      osc.frequency.exponentialRampToValueAtTime(60, now + 0.06);
+
+      oscGain.gain.setValueAtTime(0.35, now);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
 
       osc.connect(oscGain);
       oscGain.connect(ctx.destination);
-
       osc.start(now);
-      osc.stop(now + 0.35);
+      osc.stop(now + 0.07);
     } catch (e) {
-      console.warn("Audio error", e);
+      console.warn("Snap pop error", e);
+    }
+  }
+
+  // Micro crackle
+  function playSingleCrackle() {
+    if (!state.soundEnabled || !state.audioCtx) return;
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const bufferSize = Math.floor(ctx.sampleRate * 0.04);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.006));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(2400 + Math.random() * 1600, now);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.18 + Math.random() * 0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start(now);
+    } catch (e) {
+      // quiet catch
+    }
+  }
+
+  // 6. Golden Anaar & Chakri Sizzle (अनार व फुलझड़ी की चट-चट)
+  function playAnaarSound() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const dur = 2.0;
+
+      const bufferSize = Math.floor(ctx.sampleRate * dur);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * (0.35 + 0.65 * Math.sin(i * 0.04));
+      }
+
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const highpass = ctx.createBiquadFilter();
+      highpass.type = 'highpass';
+      highpass.frequency.setValueAtTime(2800, now);
+      highpass.frequency.linearRampToValueAtTime(3800, now + dur);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.03, now);
+      gain.gain.linearRampToValueAtTime(0.42, now + 0.35);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+      noise.connect(highpass);
+      highpass.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start(now);
+
+      // Add frequent micro crackle pops during the fountain
+      for (let i = 0; i < 18; i++) {
+        setTimeout(() => {
+          if (state.soundEnabled) playSingleCrackle();
+        }, i * 110 + Math.random() * 40);
+      }
+    } catch (e) {
+      console.warn("Anaar audio error", e);
     }
   }
 
@@ -355,6 +622,9 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
       this.color = FESTIVE_PALETTE[Math.floor(Math.random() * FESTIVE_PALETTE.length)];
       this.trail = [];
       this.dead = false;
+
+      // Play authentic screaming rocket whistle on ascent
+      playRocketWhistle();
     }
     update() {
       this.trail.push({ x: this.x, y: this.y, alpha: 0.8 });
@@ -368,7 +638,7 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
       if (dist < 18 || this.vy >= 0 || this.y <= this.targetY) {
         this.dead = true;
         createBurst(this.targetX, this.targetY, this.color);
-        playFireworkSound();
+        playPatakaExplosion({ heavy: false });
       }
     }
     draw() {
@@ -619,7 +889,10 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
     // Ignite Grand Deepotsav Button
     if (btnIgniteAll) {
       btnIgniteAll.addEventListener('click', () => {
+        ensureSoundEnabled();
         playDiyaBellSound();
+        // Play rapid Diwali Ladi sequence!
+        setTimeout(() => playLadiSound(), 300);
         showToast("🌟 Grand Deepotsav Ignited! All sacred diyas are glowing bright.", "🪔");
 
         if (miniDiyasRow) {
@@ -1014,13 +1287,93 @@ Warm regards & love,
   }
 
   /* ==========================================================================
-     9. UI CONTROLS & EVENT LISTENERS
+     9. DIWALI PATAKHA ZONE (AUTHENTIC FIRECRACKER INTERACTION)
+     ========================================================================== */
+  function setupPatakhaZone() {
+    const btnRocket = document.getElementById('btn-patakha-rocket');
+    const btnBomb = document.getElementById('btn-patakha-bomb');
+    const btnLadi = document.getElementById('btn-patakha-ladi');
+    const btnAnaar = document.getElementById('btn-patakha-anaar');
+
+    // 1. Sky Rocket Card
+    if (btnRocket) {
+      btnRocket.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("🚀 Sky Rocket ignited! Hear the whistling seeti & blast!", "💥");
+        launchCelebrationRocket(window.innerWidth * 0.5, window.innerHeight * 0.22);
+        setTimeout(() => {
+          launchCelebrationRocket(window.innerWidth * 0.45, window.innerHeight * 0.18);
+        }, 320);
+      });
+    }
+
+    // 2. Sutli / Rassi Bomb Card
+    if (btnBomb) {
+      btnBomb.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("💣 Sutli Bomb ignited! Tssss... DHAMAKA!", "💥");
+        playSutliBombSound();
+
+        // Screen shake & vibration effect
+        document.body.style.transform = 'translateY(4px)';
+        setTimeout(() => {
+          document.body.style.transform = 'translateY(-4px)';
+          setTimeout(() => { document.body.style.transform = ''; }, 70);
+        }, 150);
+
+        // Flash blast in center
+        setTimeout(() => {
+          createBurst(window.innerWidth / 2, window.innerHeight * 0.5, '#ff4500');
+        }, 140);
+      });
+    }
+
+    // 3. 100-Wala Mirchi Ladi Card
+    if (btnLadi) {
+      btnLadi.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("🧨 100-Wala Mirchi Ladi ignited! तड़ा-तड़ तड़ा-तड़ धमाका!", "💥");
+        playLadiSound();
+
+        // Sequential rapid fireworks bursts
+        for (let i = 0; i < 12; i++) {
+          setTimeout(() => {
+            const rx = window.innerWidth * 0.5 + (Math.random() * 260 - 130);
+            const ry = window.innerHeight * 0.55 + (Math.random() * 80 - 40);
+            createBurst(rx, ry, i % 2 === 0 ? '#ff0055' : '#ffd700');
+          }, i * 85);
+        }
+      });
+    }
+
+    // 4. Golden Anaar Card
+    if (btnAnaar) {
+      btnAnaar.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("✨ Golden Anaar ignited! Sizzling fountain of sparks!", "🌟");
+        playAnaarSound();
+
+        // Sizzling fountain of golden sparkles
+        for (let i = 0; i < 16; i++) {
+          setTimeout(() => {
+            const rx = window.innerWidth * 0.5 + (Math.random() * 90 - 45);
+            const ry = window.innerHeight * 0.62;
+            createBurst(rx, ry, '#ffd700');
+          }, i * 110);
+        }
+      });
+    }
+  }
+
+  /* ==========================================================================
+     10. UI CONTROLS & EVENT LISTENERS
      ========================================================================== */
   function setupUiControls() {
     // Sound Toggle Button
     const soundBtn = document.getElementById('sound-toggle-btn');
     const soundIcon = document.getElementById('sound-icon');
     const soundStatus = document.getElementById('sound-status');
+    const indicatorState = document.getElementById('sound-indicator-state');
 
     if (soundBtn) {
       soundBtn.addEventListener('click', () => {
@@ -1031,11 +1384,13 @@ Warm regards & love,
           initAudioContext();
           if (soundIcon) soundIcon.textContent = "🔔";
           if (soundStatus) soundStatus.textContent = "On";
-          playDiyaBellSound();
-          showToast("Festive sounds enabled! 🔔 Enjoy temple bells & fireworks.", "🎶");
+          if (indicatorState) indicatorState.textContent = "Active 🔊";
+          playPatakaExplosion({ heavy: false });
+          showToast("🔊 Patakha Sound Enabled! Crackers are ready to burst!", "💥");
         } else {
           if (soundIcon) soundIcon.textContent = "🔇";
           if (soundStatus) soundStatus.textContent = "Off";
+          if (indicatorState) indicatorState.textContent = "Muted 🔇";
           showToast("Sound muted", "🔇");
         }
       });
@@ -1045,12 +1400,13 @@ Warm regards & love,
     const fireworkBtn = document.getElementById('firework-launch-btn');
     if (fireworkBtn) {
       fireworkBtn.addEventListener('click', () => {
+        ensureSoundEnabled();
         for (let i = 0; i < 3; i++) {
           setTimeout(() => {
             launchCelebrationRocket();
-          }, i * 200);
+          }, i * 220);
         }
-        showToast("🎆 Happy Diwali! Sparkling fireworks launched.", "✨");
+        showToast("🎆 Happy Diwali! Sparkling rockets launched with whistle & boom!", "✨");
       });
     }
 
@@ -1058,12 +1414,13 @@ Warm regards & love,
     const bannerFireworkBtn = document.getElementById('banner-firework-btn');
     if (bannerFireworkBtn) {
       bannerFireworkBtn.addEventListener('click', () => {
+        ensureSoundEnabled();
         for (let i = 0; i < 5; i++) {
           setTimeout(() => {
             launchCelebrationRocket();
           }, i * 180);
         }
-        playDiyaBellSound();
+        playSutliBombSound();
         showToast("🎆 Grand celebration fireworks illuminating the sky!", "✨");
       });
     }
@@ -1079,7 +1436,7 @@ Warm regards & love,
   }
 
   /* ==========================================================================
-     10. INITIALIZATION
+     11. INITIALIZATION
      ========================================================================== */
   function init() {
     setupCanvas();
@@ -1087,6 +1444,7 @@ Warm regards & love,
     setupGreetingGenerator();
     setupShareFeatures();
     setupBlessingCards();
+    setupPatakhaZone();
     setupUiControls();
 
     // Welcome Console Greeting
