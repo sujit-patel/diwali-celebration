@@ -475,6 +475,216 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
     }
   }
 
+  // 7. Zameen Chakri Whirling Sound (ज़मीन चकरी की सर्र-सर्र आवाज़)
+  function playChakriSound() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const dur = 2.4;
+
+      // Whirling dual tone oscillator with LFO modulation
+      const osc = ctx.createOscillator();
+      const oscGain = ctx.createGain();
+      const lfo = ctx.createOscillator();
+      const lfoGain = ctx.createGain();
+
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.linearRampToValueAtTime(1400, now + 0.6);
+      osc.frequency.linearRampToValueAtTime(800, now + dur);
+
+      // Fast spinning LFO modulation (spinning whirl)
+      lfo.frequency.setValueAtTime(14, now);
+      lfo.frequency.linearRampToValueAtTime(22, now + 1.2);
+      lfoGain.gain.setValueAtTime(180, now);
+      lfo.connect(lfoGain);
+      lfoGain.connect(osc.frequency);
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(900, now);
+      filter.frequency.linearRampToValueAtTime(1600, now + 1.0);
+      filter.Q.setValueAtTime(3.5, now);
+
+      oscGain.gain.setValueAtTime(0.04, now);
+      oscGain.gain.linearRampToValueAtTime(0.3, now + 0.4);
+      oscGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+      osc.connect(filter);
+      filter.connect(oscGain);
+      oscGain.connect(ctx.destination);
+
+      lfo.start(now);
+      osc.start(now);
+      lfo.stop(now + dur);
+      osc.stop(now + dur + 0.05);
+
+      // Hissing friction noise
+      const bufferSize = Math.floor(ctx.sampleRate * dur);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * Math.sin(i * 0.008);
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const noiseFilter = ctx.createBiquadFilter();
+      noiseFilter.type = 'highpass';
+      noiseFilter.frequency.setValueAtTime(3200, now);
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.08, now);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+      noise.connect(noiseFilter);
+      noiseFilter.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+      noise.start(now);
+    } catch (e) {
+      console.warn("Chakri audio error", e);
+    }
+  }
+
+  // 8. Bullet / Hydro Bomb Sharp Sonic Crack (बुलेट बम तीखा क्रैक)
+  function playBulletBombSound() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+
+      // Ultra-sharp transient whip crack
+      const crackSize = Math.floor(ctx.sampleRate * 0.07);
+      const crackBuffer = ctx.createBuffer(1, crackSize, ctx.sampleRate);
+      const crackData = crackBuffer.getChannelData(0);
+      for (let i = 0; i < crackSize; i++) {
+        crackData[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.005));
+      }
+      const crackSource = ctx.createBufferSource();
+      crackSource.buffer = crackBuffer;
+
+      const crackFilter = ctx.createBiquadFilter();
+      crackFilter.type = 'bandpass';
+      crackFilter.frequency.setValueAtTime(2400, now);
+      crackFilter.Q.setValueAtTime(2.2, now);
+
+      const crackGain = ctx.createGain();
+      crackGain.gain.setValueAtTime(0.85, now);
+      crackGain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+
+      crackSource.connect(crackFilter);
+      crackFilter.connect(crackGain);
+      crackGain.connect(ctx.destination);
+      crackSource.start(now);
+
+      // Heavy low boom punch following the crack
+      const subOsc = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      subOsc.type = 'triangle';
+      subOsc.frequency.setValueAtTime(175, now);
+      subOsc.frequency.exponentialRampToValueAtTime(28, now + 0.38);
+
+      subGain.gain.setValueAtTime(0.7, now);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
+
+      subOsc.connect(subGain);
+      subGain.connect(ctx.destination);
+      subOsc.start(now);
+      subOsc.stop(now + 0.4);
+    } catch (e) {
+      console.warn("Bullet bomb error", e);
+    }
+  }
+
+  // 9. Electric Phuljhadi Sparkler Sound (फुलझड़ी की लगातार चट-चट)
+  function playPhuljhadiSound() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+    if (!state.audioCtx) return;
+
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const dur = 2.5;
+
+      const bufferSize = Math.floor(ctx.sampleRate * dur);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        data[i] = (Math.random() * 2 - 1) * (0.3 + 0.7 * (Math.random() > 0.85 ? 1 : 0.1));
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'highpass';
+      filter.frequency.setValueAtTime(3600, now);
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.05, now);
+      gain.gain.linearRampToValueAtTime(0.35, now + 0.2);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + dur);
+
+      noise.connect(filter);
+      filter.connect(gain);
+      gain.connect(ctx.destination);
+      noise.start(now);
+
+      // Micro pops
+      for (let i = 0; i < 22; i++) {
+        setTimeout(() => {
+          if (state.soundEnabled) playSingleCrackle();
+        }, i * 105 + Math.random() * 50);
+      }
+    } catch (e) {
+      console.warn("Phuljhadi audio error", e);
+    }
+  }
+
+  // 10. Multi-Sky Shot Aerial Fireworks Sequence (7-कलर स्काई शॉट)
+  function playSkyShotSound() {
+    if (!state.soundEnabled) return;
+    initAudioContext();
+
+    // 4 sequential aerial shots: Thump -> Whistle -> BOOM!
+    for (let shot = 0; shot < 4; shot++) {
+      setTimeout(() => {
+        if (!state.soundEnabled) return;
+        playMortarThump();
+        setTimeout(() => {
+          playRocketWhistle();
+        }, 80);
+        setTimeout(() => {
+          playPatakaExplosion({ heavy: shot === 3 });
+        }, 450);
+      }, shot * 550);
+    }
+  }
+
+  // Aerial mortar tube thump
+  function playMortarThump() {
+    if (!state.soundEnabled || !state.audioCtx) return;
+    try {
+      const ctx = state.audioCtx;
+      const now = ctx.currentTime;
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(95, now);
+      osc.frequency.exponentialRampToValueAtTime(35, now + 0.15);
+      gain.gain.setValueAtTime(0.4, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.16);
+    } catch (e) {}
+  }
+
   // Play celebratory harp / chime fanfare for greeting card generation
   function playCardFanfare() {
     if (!state.soundEnabled) return;
@@ -959,15 +1169,59 @@ Wishing you a grand, prosperous Diwali and a triumphant year ahead!`,
           if (styleSelect) styleSelect.value = state.style;
         }
 
-        // Show Incoming Greeting Alert Banner if recipient is in URL
-        if (to) {
+        // Show Prominent Top Sticky Announcement Bar if to or from exists
+        const topbar = document.getElementById('incoming-wish-topbar');
+        const topbarText = document.getElementById('topbar-greeting-text');
+        const replyBtn = document.getElementById('topbar-reply-btn');
+
+        if (to || from) {
+          if (topbar && topbarText) {
+            topbar.classList.remove('hidden');
+            if (to && from) {
+              topbarText.innerHTML = `<strong>${escapeHtml(to)} ji</strong>, aapke liye <strong>${escapeHtml(from)} ji</strong> ne Diwali ki shubhkaamnaayein bheji hain! ✨`;
+            } else if (to) {
+              topbarText.innerHTML = `<strong>${escapeHtml(to)} ji</strong>, aapke liye Diwali ki vishesh shubhkaamnaayein aayi hain! 🪔`;
+            } else if (from) {
+              topbarText.innerHTML = `<strong>${escapeHtml(from)} ji</strong> ne aapke liye Diwali ka shubh sandesh bheja hai! 🪔`;
+            }
+          }
+
           const banner = document.getElementById('incoming-wish-banner');
           const bannerText = document.getElementById('incoming-wish-text');
           if (banner && bannerText) {
             banner.classList.remove('hidden');
-            const senderSnippet = from ? ` from ${from}` : "";
-            bannerText.innerHTML = `<strong>✨ A special Diwali blessing has arrived for ${escapeHtml(to)}${escapeHtml(senderSnippet)}!</strong>`;
+            if (to && from) {
+              bannerText.innerHTML = `<strong>✨ ${escapeHtml(to)} ji, aapko ${escapeHtml(from)} ji ne Happy Diwali wish bheji hai! 🪔</strong>`;
+            } else if (to) {
+              bannerText.innerHTML = `<strong>✨ Happy Diwali, ${escapeHtml(to)}! 🪔</strong>`;
+            } else if (from) {
+              bannerText.innerHTML = `<strong>✨ A special Diwali blessing from ${escapeHtml(from)}! 🪔</strong>`;
+            }
           }
+        }
+
+        // Reply / Send Wish Back Button action
+        if (replyBtn) {
+          replyBtn.addEventListener('click', () => {
+            const originalTo = state.recipientName;
+            const originalFrom = state.senderName;
+
+            // Swap: Receiver becomes the sender, original sender becomes the recipient!
+            state.senderName = originalTo || "";
+            state.recipientName = originalFrom || "";
+
+            if (senderInput) senderInput.value = state.senderName;
+            if (recipientInput) recipientInput.value = state.recipientName;
+
+            updateCard(false);
+
+            showToast(`💌 Replying to ${state.recipientName || 'your loved one'}! Enter your name & send back.`, "✨");
+            const genSection = document.getElementById('wishes-generator');
+            if (genSection) {
+              genSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              if (senderInput) setTimeout(() => senderInput.focus(), 600);
+            }
+          });
         }
       } catch (err) {
         console.warn("Could not parse URL params", err);
@@ -1352,6 +1606,7 @@ Warm regards & love,
         ensureSoundEnabled();
         showToast("✨ Golden Anaar ignited! Sizzling fountain of sparks!", "🌟");
         playAnaarSound();
+        trackAnalytics('ignite_cracker', { cracker_name: 'golden_anaar' });
 
         // Sizzling fountain of golden sparkles
         for (let i = 0; i < 16; i++) {
@@ -1362,6 +1617,139 @@ Warm regards & love,
           }, i * 110);
         }
       });
+    }
+
+    // 5. Zameen Chakri Card
+    const btnChakri = document.getElementById('btn-patakha-chakri');
+    if (btnChakri) {
+      btnChakri.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("🌀 Zameen Chakri spinning! Whirling sparks & buzzing hiss!", "✨");
+        playChakriSound();
+        trackAnalytics('ignite_cracker', { cracker_name: 'zameen_chakri' });
+
+        // Circular rotating spark bursts
+        const cx = window.innerWidth * 0.5;
+        const cy = window.innerHeight * 0.65;
+        for (let i = 0; i < 20; i++) {
+          setTimeout(() => {
+            const angle = (i * 0.6) % (Math.PI * 2);
+            const dist = 30 + (i * 3);
+            const rx = cx + Math.cos(angle) * dist;
+            const ry = cy + Math.sin(angle) * dist;
+            createBurst(rx, ry, i % 2 === 0 ? '#ffea00' : '#ff5400');
+          }, i * 85);
+        }
+      });
+    }
+
+    // 6. Bullet / Hydro Bomb Card
+    const btnBullet = document.getElementById('btn-patakha-bullet');
+    if (btnBullet) {
+      btnBullet.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("💥 Bullet Bomb blasted! Sonic crack & dazzling flash!", "⚡");
+        playBulletBombSound();
+        trackAnalytics('ignite_cracker', { cracker_name: 'bullet_bomb' });
+
+        // Quick flash and snap burst
+        document.body.style.filter = 'brightness(1.4)';
+        setTimeout(() => { document.body.style.filter = ''; }, 70);
+        createBurst(window.innerWidth * 0.5, window.innerHeight * 0.5, '#ffffff');
+        setTimeout(() => {
+          createBurst(window.innerWidth * 0.5, window.innerHeight * 0.5, '#ff2200');
+        }, 60);
+      });
+    }
+
+    // 7. Electric Phuljhadi Card
+    const btnPhuljhadi = document.getElementById('btn-patakha-phuljhadi');
+    if (btnPhuljhadi) {
+      btnPhuljhadi.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("🎇 Electric Phuljhadi sparkling! Glittering star shower!", "✨");
+        playPhuljhadiSound();
+        trackAnalytics('ignite_cracker', { cracker_name: 'electric_phuljhadi' });
+
+        // Star shower sparks
+        const cx = window.innerWidth * 0.5;
+        const cy = window.innerHeight * 0.6;
+        for (let i = 0; i < 18; i++) {
+          setTimeout(() => {
+            const rx = cx + (Math.random() * 120 - 60);
+            const ry = cy + (Math.random() * 80 - 40);
+            createBurst(rx, ry, '#c084fc');
+          }, i * 110);
+        }
+      });
+    }
+
+    // 8. 7-Color Multi-Sky Shot Card
+    const btnSkyShot = document.getElementById('btn-patakha-skyshot');
+    if (btnSkyShot) {
+      btnSkyShot.addEventListener('click', () => {
+        ensureSoundEnabled();
+        showToast("⚡ Multi-Sky Shot firing! 4 sequential aerial rainbow blasts!", "🎆");
+        playSkyShotSound();
+        trackAnalytics('ignite_cracker', { cracker_name: 'multi_sky_shot' });
+
+        // 4 aerial rockets with rainbow bursts
+        const rainbowColors = ['#ff0055', '#ffd700', '#00ffcc', '#bf55ec'];
+        for (let s = 0; s < 4; s++) {
+          setTimeout(() => {
+            const destX = window.innerWidth * (0.3 + s * 0.14);
+            const destY = window.innerHeight * (0.15 + (s % 2) * 0.08);
+            launchCelebrationRocket(destX, destY);
+          }, s * 550);
+        }
+      });
+    }
+  }
+
+  /* ==========================================================================
+     10. LIVE VISITOR COUNTER
+     ========================================================================== */
+  function setupVisitorCounter() {
+    const counterEl = document.getElementById('live-visitor-count');
+    if (!counterEl) return;
+
+    const STORAGE_KEY = 'diwali_festive_visitors_2026';
+    const BASE_COUNT = 14285;
+
+    let count = parseInt(localStorage.getItem(STORAGE_KEY), 10);
+    if (!count || isNaN(count) || count < BASE_COUNT) {
+      count = BASE_COUNT + Math.floor(Math.random() * 45);
+    }
+
+    // Increment on each visit
+    count += 1;
+    localStorage.setItem(STORAGE_KEY, count);
+
+    function renderCount(val) {
+      counterEl.textContent = val.toLocaleString('en-IN');
+    }
+
+    renderCount(count);
+
+    // Subtle realistic live community increments
+    setInterval(() => {
+      count += Math.floor(Math.random() * 2) + 1;
+      localStorage.setItem(STORAGE_KEY, count);
+      renderCount(count);
+
+      counterEl.style.transform = 'scale(1.06)';
+      setTimeout(() => { counterEl.style.transform = 'scale(1)'; }, 350);
+    }, 24000);
+  }
+
+  // Google Analytics Event Helper
+  function trackAnalytics(eventName, eventParams = {}) {
+    try {
+      if (typeof window.gtag === 'function') {
+        window.gtag('event', eventName, eventParams);
+      }
+    } catch (e) {
+      // quiet fail
     }
   }
 
@@ -1445,6 +1833,7 @@ Warm regards & love,
     setupShareFeatures();
     setupBlessingCards();
     setupPatakhaZone();
+    setupVisitorCounter();
     setupUiControls();
 
     // Welcome Console Greeting

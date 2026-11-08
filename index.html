@@ -29,6 +29,17 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Poppins:wght@300;400;500;600;700&family=Rozha+One&family=Yatra+One&display=swap" rel="stylesheet">
 
+  <!-- Google Tag Manager (GTM-KSPFGVCL) -->
+  <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-KSPFGVCL"></script>
+  <!-- Google tag (gtag.js) - Google Analytics G-G7MVZ32Y5K (Stream ID: 16295595991) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-G7MVZ32Y5K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-G7MVZ32Y5K');
+  </script>
+
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -83,6 +94,29 @@
       <span class="control-icon">🎆</span>
       <span class="control-label">Launch Fireworks</span>
     </button>
+  </aside>
+
+  <!-- Sticky Incoming Personalized Diwali Wish Announcement Bar -->
+  <aside id="incoming-wish-topbar" class="incoming-wish-topbar hidden" role="alert" aria-live="polite">
+    <div class="topbar-container">
+      <div class="topbar-info">
+        <span class="topbar-icon" aria-hidden="true">🪔</span>
+        <div class="topbar-text-group">
+          <span class="topbar-hindi-tag">दीपावली शुभकामना संदेश</span>
+          <p class="topbar-message" id="topbar-greeting-text">
+            A special Diwali greeting has arrived for you!
+          </p>
+        </div>
+      </div>
+      <div class="topbar-actions">
+        <a href="#generated-card-section" class="topbar-btn topbar-btn--view">
+          <span>💌 View Card</span>
+        </a>
+        <button type="button" class="topbar-btn topbar-btn--reply" id="topbar-reply-btn">
+          <span>↩️ Send Wish Back</span>
+        </button>
+      </div>
+    </div>
   </aside>
 
   <!-- Header / Navigation Bar -->
@@ -645,11 +679,67 @@
             <div class="patakha-icon-box">
               <span class="patakha-emoji">✨</span>
             </div>
-            <h3 class="patakha-name">Golden Anaar &amp; Chakri</h3>
-            <span class="patakha-hindi">अनार व फुलझड़ी (चट-चट)</span>
+            <h3 class="patakha-name">Golden Anaar</h3>
+            <span class="patakha-hindi">अनार (चट-चट फव्वारा)</span>
             <p class="patakha-desc">Sizzling golden fountain of fiery crackles and flying sparks.</p>
             <div class="patakha-btn-action">
               <span>Light Anaar ✨</span>
+            </div>
+          </button>
+
+          <!-- 5. Zameen Chakri (Ground Spinner) -->
+          <button type="button" class="patakha-card" id="btn-patakha-chakri" aria-label="Ignite Zameen Chakri Ground Spinner">
+            <div class="patakha-badge">Spinning Fire</div>
+            <div class="patakha-icon-box">
+              <span class="patakha-emoji">🌀</span>
+            </div>
+            <h3 class="patakha-name">Zameen Chakri</h3>
+            <span class="patakha-hindi">ज़मीन चकरी (घूमने वाली)</span>
+            <p class="patakha-desc">High-speed whirling ground spinner with buzzing Doppler hiss and circular sparks.</p>
+            <div class="patakha-btn-action">
+              <span>Spin Chakri 🌀</span>
+            </div>
+          </button>
+
+          <!-- 6. Bullet / Hydro Bomb -->
+          <button type="button" class="patakha-card" id="btn-patakha-bullet" aria-label="Ignite Bullet Bomb Loud Sonic Crack">
+            <div class="patakha-badge">Sonic Crack</div>
+            <div class="patakha-icon-box">
+              <span class="patakha-emoji">💥</span>
+            </div>
+            <h3 class="patakha-name">Bullet / Hydro Bomb</h3>
+            <span class="patakha-hindi">बुलेट बम (तीखा धमाका)</span>
+            <p class="patakha-desc">Ear-splitting high-decibel sonic whip-crack with dazzling flash and fiery boom.</p>
+            <div class="patakha-btn-action">
+              <span>Fire Bullet 💥</span>
+            </div>
+          </button>
+
+          <!-- 7. Electric Phuljhadi -->
+          <button type="button" class="patakha-card" id="btn-patakha-phuljhadi" aria-label="Light Electric Phuljhadi Sparkler">
+            <div class="patakha-badge">Glitter Shower</div>
+            <div class="patakha-icon-box">
+              <span class="patakha-emoji">🎇</span>
+            </div>
+            <h3 class="patakha-name">Electric Phuljhadi</h3>
+            <span class="patakha-hindi">रंगीन फुलझड़ी (सितारे)</span>
+            <p class="patakha-desc">Handheld sparkler showering millions of twinkling stars and silver sparkles.</p>
+            <div class="patakha-btn-action">
+              <span>Light Phuljhadi 🎇</span>
+            </div>
+          </button>
+
+          <!-- 8. 7-Color Multi-Sky Shot -->
+          <button type="button" class="patakha-card" id="btn-patakha-skyshot" aria-label="Fire 7-Color Multi Sky Shot">
+            <div class="patakha-badge">Multi Aerial</div>
+            <div class="patakha-icon-box">
+              <span class="patakha-emoji">⚡</span>
+            </div>
+            <h3 class="patakha-name">Multi-Sky Shot</h3>
+            <span class="patakha-hindi">स्काई शॉट (रंग-बिरंगा)</span>
+            <p class="patakha-desc">Multiple aerial cannon shots bursting into a cascading rainbow of loud bursts.</p>
+            <div class="patakha-btn-action">
+              <span>Fire Sky Shot ⚡</span>
             </div>
           </button>
         </div>
@@ -707,6 +797,20 @@
         <p class="footer-sanskrit-quote">
           ॐ असतो मा सद्गमय । तमसो मा ज्योतिर्गमय । मृत्योर्मा अमृतं गमय ॥
         </p>
+      </div>
+
+      <!-- Live Festive Visitor Counter -->
+      <div class="visitor-counter-box" id="visitor-counter-box" aria-label="Total Diwali Celebrations and Visitors">
+        <div class="visitor-badge">
+          <span class="live-pulse-dot" aria-hidden="true"></span>
+          <span>Live Celebrations</span>
+        </div>
+        <div class="visitor-count-row">
+          <span class="visitor-icon" aria-hidden="true">🪔</span>
+          <span class="visitor-number" id="live-visitor-count">14,285</span>
+          <span class="visitor-label">Festive Visitors</span>
+        </div>
+        <p class="visitor-subtext">Every visitor kindles a sacred diya of joy &amp; prosperity across the world!</p>
       </div>
 
       <!-- Footer Quick Action Buttons -->
