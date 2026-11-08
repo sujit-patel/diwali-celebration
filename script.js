@@ -1754,9 +1754,89 @@ Warm regards & love,
   }
 
   /* ==========================================================================
+     JETHALAL SPECIAL VOICE CONTROLLER (TMKOC "Happy Diwali... Baap re Baap!")
+     ========================================================================== */
+  let jethaAudio = null;
+  let isJethaPlaying = false;
+
+  function setupJethalalVoice() {
+    const floatingBtn = document.getElementById('jethalal-voice-btn');
+    const heroBtn = document.getElementById('hero-jetha-btn');
+    const bannerBtn = document.getElementById('banner-jetha-btn');
+    const jethaLabel = document.getElementById('jetha-label');
+    const jethaIcon = document.getElementById('jetha-icon');
+
+    function updateUiState(playing) {
+      isJethaPlaying = playing;
+      const allBtns = [floatingBtn, heroBtn, bannerBtn].filter(Boolean);
+      allBtns.forEach(btn => {
+        if (playing) {
+          btn.classList.add('playing');
+        } else {
+          btn.classList.remove('playing');
+        }
+      });
+
+      if (jethaLabel) {
+        jethaLabel.textContent = playing ? "Playing ⏸️" : "Jethalal Wish 🔊";
+      }
+      if (jethaIcon) {
+        jethaIcon.textContent = playing ? "🎶" : "🥸";
+      }
+    }
+
+    function toggleJethalalAudio() {
+      ensureSoundEnabled();
+
+      if (!jethaAudio) {
+        jethaAudio = new Audio('assets/jethalal-diwali.mp3');
+        jethaAudio.addEventListener('ended', () => {
+          updateUiState(false);
+          showToast("Happy Diwali from Jethalal! 🪔", "🥸");
+        });
+        jethaAudio.addEventListener('error', (e) => {
+          console.warn("Jethalal audio load error", e);
+          showToast("Could not load audio. Please check assets.", "⚠️");
+          updateUiState(false);
+        });
+      }
+
+      if (isJethaPlaying) {
+        jethaAudio.pause();
+        jethaAudio.currentTime = 0;
+        updateUiState(false);
+        showToast("Jethalal voice stopped ⏸️", "🥸");
+      } else {
+        jethaAudio.play().then(() => {
+          updateUiState(true);
+          showToast("🥸 जेठालाल: 'Happy Diwali... Baap re Baap!' 🎉", "🪔");
+
+          // Launch joyous celebration fireworks cascade!
+          for (let i = 0; i < 4; i++) {
+            setTimeout(() => {
+              launchCelebrationRocket();
+            }, i * 320);
+          }
+          trackAnalytics('play_jethalal_voice');
+        }).catch(err => {
+          console.warn("Play error", err);
+          updateUiState(false);
+        });
+      }
+    }
+
+    if (floatingBtn) floatingBtn.addEventListener('click', toggleJethalalAudio);
+    if (heroBtn) heroBtn.addEventListener('click', toggleJethalalAudio);
+    if (bannerBtn) bannerBtn.addEventListener('click', toggleJethalalAudio);
+  }
+
+  /* ==========================================================================
      10. UI CONTROLS & EVENT LISTENERS
      ========================================================================== */
   function setupUiControls() {
+    // Jethalal Voice Controller
+    setupJethalalVoice();
+
     // Sound Toggle Button
     const soundBtn = document.getElementById('sound-toggle-btn');
     const soundIcon = document.getElementById('sound-icon');

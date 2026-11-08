@@ -86,6 +86,10 @@
 
   <!-- Floating Audio & Celebration Controls -->
   <aside class="floating-controls" aria-label="Celebration Controls">
+    <button id="jethalal-voice-btn" class="control-btn control-btn--jetha" title="Play Jethalal Happy Diwali Voice" aria-label="Play Jethalal Happy Diwali Voice">
+      <span class="control-icon" id="jetha-icon">🥸</span>
+      <span class="control-label" id="jetha-label">Jethalal Wish 🔊</span>
+    </button>
     <button id="sound-toggle-btn" class="control-btn" title="Toggle Festive Sound Effects" aria-label="Toggle Festive Sound Effects" aria-pressed="false">
       <span class="control-icon" id="sound-icon">🔇</span>
       <span class="control-label">Sound: <strong id="sound-status">Off</strong></span>
@@ -212,6 +216,9 @@
           <a href="#interactive-diya" class="cta-button secondary-cta" id="cta-light-diya-btn">
             <span class="cta-text">🪔 Light the Diya</span>
           </a>
+          <button type="button" class="cta-button jetha-cta" id="hero-jetha-btn" title="Listen to Jethalal Happy Diwali voice">
+            <span class="cta-text">🥸 Jethalal Wish ("बाप रे बाप!")</span>
+          </button>
         </div>
 
         <!-- Floating scroll indicator -->
@@ -768,6 +775,9 @@
             <div class="celebration-cta-actions">
               <button type="button" class="cta-button primary-cta" id="banner-firework-btn">
                 <span>🎆 Launch Grand Celebration Fireworks</span>
+              </button>
+              <button type="button" class="cta-button jetha-cta" id="banner-jetha-btn">
+                <span>🥸 Jethalal Wish ("Happy Diwali... बाप रे बाप!")</span>
               </button>
               <a href="#wishes-generator" class="cta-button secondary-cta">
                 <span>💌 Create Another Greeting</span>

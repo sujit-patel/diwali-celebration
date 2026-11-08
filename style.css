@@ -329,6 +329,52 @@ button {
   border-color: rgba(255, 183, 3, 0.6);
 }
 
+/* Jethalal Voice Button Styling */
+.control-btn--jetha {
+  background: linear-gradient(135deg, rgba(220, 20, 60, 0.95) 0%, rgba(255, 140, 0, 0.95) 50%, rgba(255, 215, 0, 0.95) 100%);
+  border-color: #ffd700;
+  color: #fff;
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 24px rgba(220, 20, 60, 0.4), var(--glow-gold-sm);
+}
+
+.control-btn--jetha:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(220, 20, 60, 0.6), var(--glow-gold-md);
+  filter: brightness(1.15);
+}
+
+.control-btn--jetha.playing {
+  animation: jethaBeat 0.8s infinite alternate;
+  border-color: #fff;
+}
+
+@keyframes jethaBeat {
+  0% { transform: scale(1); box-shadow: 0 0 15px #ff007f, 0 0 30px #ffd700; }
+  100% { transform: scale(1.08); box-shadow: 0 0 25px #ff7700, 0 0 45px #fff; }
+}
+
+.jetha-cta {
+  background: linear-gradient(135deg, #e63946 0%, #f77f00 50%, #fcbf49 100%);
+  color: #120b00;
+  font-weight: 700;
+  border: 1.5px solid #ffd700;
+  box-shadow: 0 8px 25px rgba(230, 57, 70, 0.4), var(--glow-gold-sm);
+  transition: all var(--transition-normal);
+  cursor: pointer;
+}
+
+.jetha-cta:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow: 0 12px 32px rgba(230, 57, 70, 0.6), var(--glow-gold-md);
+  filter: brightness(1.12);
+}
+
+.jetha-cta.playing {
+  animation: jethaBeat 0.8s infinite alternate;
+}
+
 .control-icon {
   font-size: 1.15rem;
   display: inline-block;
